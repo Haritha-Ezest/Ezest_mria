@@ -255,20 +255,19 @@ async def get_available_workflows():
             "agents": ["ocr", "ner", "chunking", "graph"],
             "estimated_duration": "5-8 minutes",
             "use_case": "Comprehensive medical document analysis and knowledge graph creation"
-        },
-        WorkflowType.DOCUMENT_TO_GRAPH: {
+        },        WorkflowType.DOCUMENT_TO_GRAPH: {
             "name": "Document to Knowledge Graph",
             "description": "Process documents and create knowledge graph entries",
             "agents": ["ocr", "ner", "chunking", "graph"],
             "estimated_duration": "6-10 minutes",
             "use_case": "Create structured knowledge representations from medical documents"
         },
-        WorkflowType.BATCH_DOCUMENTS: {
-            "name": "Batch Document Processing",
-            "description": "Process multiple documents efficiently",
-            "agents": ["ocr", "ner", "chunking", "graph"],
-            "estimated_duration": "Variable based on batch size",
-            "use_case": "Efficient processing of multiple medical documents"
+        WorkflowType.INSIGHT_GENERATION: {
+            "name": "Medical Insight Generation",
+            "description": "Generate medical insights from processed documents",
+            "agents": ["ocr", "ner", "chunking", "graph", "insight"],
+            "estimated_duration": "8-12 minutes",
+            "use_case": "Extract actionable medical insights and recommendations"
         }
     }
     
@@ -367,7 +366,7 @@ async def cancel_job(
                 status_code=404,
                 detail=f"Job {job_id} not found"
             )
-            
+        
         if job_status.status in [JobStatus.COMPLETED, JobStatus.FAILED, JobStatus.CANCELLED]:
             raise HTTPException(
                 status_code=400,
@@ -382,7 +381,7 @@ async def cancel_job(
                 "message": f"Job {job_id} has been cancelled",
                 "job_id": cancelled_job.job_id,
                 "status": cancelled_job.status.value,
-                "cancelled_at": cancelled_job.cancelled_at.isoformat() if cancelled_job.cancelled_at else None,
+                "cancelled_time": datetime.now().isoformat(),
                 "cancellation_reason": "User requested cancellation"
             })
             
