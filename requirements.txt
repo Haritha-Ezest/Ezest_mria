@@ -1,0 +1,87 @@
+# FastAPI and web framework dependencies
+fastapi
+uvicorn[standard]
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
+
+# LangChain ecosystem
+langchain
+langchain-community
+langchain-core
+langchain-openai
+langgraph
+langsmith
+
+# Database drivers
+neo4j
+redis
+
+# Vector store and embeddings
+chromadb
+sentence-transformers
+faiss-cpu
+
+# OCR libraries
+pytesseract
+Pillow
+pdf2image
+opencv-python
+
+# NER and NLP
+spacy>=3.7.0,<3.8.0  # Compatible with scispacy
+scispacy
+transformers
+torch
+# Medical NLP models
+# Note: Install these separately as they require model downloads:
+# python -m spacy download en_core_web_sm
+# pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz
+# pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_med7_lg-0.5.4.tar.gz
+
+# Medical knowledge bases (optional - for entity linking)
+# umls-python
+# snomed-ct-python
+
+# File handling
+aiofiles
+python-magic-bin  # Windows-compatible version with bundled libmagic
+
+# Data processing
+pandas
+numpy<2.0.0  # Pinned to 1.x for spaCy compatibility
+pydantic
+pydantic-settings
+
+# HTTP client
+httpx
+requests
+
+# Logging and monitoring
+structlog
+prometheus-client
+
+# Task queue
+celery
+kombu
+
+# Environment and configuration
+python-dotenv
+
+# Development and testing
+pytest
+pytest-asyncio
+pytest-mock
+black
+flake8
+mypy
+
+# Security
+cryptography
+
+# System monitoring
+psutil
+
+
+
+

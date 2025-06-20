@@ -1,0 +1,14 @@
+# Streamlit Application Dependencies for MRIA
+# Add these packages to your existing requirements.txt or install separately
+
+# Core Streamlit
+streamlit>=1.28.0
+
+# Data visualization and manipulation
+plotly>=5.17.0
+pandas>=2.0.0
+
+# Additional utilities for Streamlit app
+pillow>=10.0.0  # Image processing
+requests>=2.31.0  # Already in main requirements
+python-multipart>=0.0.6  # File upload handling
