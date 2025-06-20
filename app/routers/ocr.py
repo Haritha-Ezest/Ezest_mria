@@ -18,6 +18,7 @@ from app.schemas.ocr import (
     OCRBatchResponse, OCRHealthCheck, DocumentType, ImagePreprocessing, OCRStatus
 )
 from app.services.ocr_processor import get_ocr_processor, OCRProcessor
+from app.services.file_handler import FileHandlerService
 from app.common.utils import get_logger
 
 # Configure logging
@@ -25,6 +26,16 @@ logger = get_logger(__name__)
 
 # Create router instance
 router = APIRouter(tags=["ocr"])
+
+
+def get_file_handler() -> FileHandlerService:
+    """
+    Get singleton instance of the FileHandlerService.
+    
+    Returns:
+        FileHandlerService: File handling service
+    """
+    return FileHandlerService()
 
 
 @router.get("/info")
@@ -167,7 +178,8 @@ async def upload_and_process(
     preprocessing: ImagePreprocessing = Form(ImagePreprocessing.MEDICAL_OPTIMIZED),
     languages: str = Form("eng"),
     confidence_threshold: float = Form(0.6),
-    ocr_processor: OCRProcessor = Depends(get_ocr_processor)
+    ocr_processor: OCRProcessor = Depends(get_ocr_processor),
+    file_handler: FileHandlerService = Depends(get_file_handler)
 ) -> OCRResponse:
     """
     Upload a file and process it with OCR.
@@ -229,12 +241,26 @@ async def upload_and_process(
                 job_id=job_id,
                 config=config
             )
-            
+              # Store the file permanently in the appropriate storage location
+            await file.seek(0)  # Reset file pointer for re-reading
+            file_metadata = await file_handler.store_file(
+                file=file, 
+                patient_id=patient_id or "unknown", 
+                document_type=document_type
+            )
+            logger.info(f"Stored file permanently at: {file_metadata.stored_path}")
+
             # Process the document
             ocr_response = await ocr_processor.process_document(ocr_request)
             
-            # Add original filename to response
+            # Add original filename and stored path to response
             ocr_response.original_filename = file.filename
+            ocr_response.file_format = file_metadata.mime_type
+            
+            # Add stored path to metadata if it doesn't exist
+            if not ocr_response.metadata:
+                ocr_response.metadata = {}
+            ocr_response.metadata["stored_path"] = file_metadata.stored_path
             
             return ocr_response
             

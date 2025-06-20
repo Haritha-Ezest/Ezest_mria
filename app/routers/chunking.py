@@ -109,9 +109,27 @@ async def process_document_chunks(request: ChunkRequest):
         
         if len(request.text) > 1000000:  # 1MB limit
             raise HTTPException(status_code=400, detail="Text content too large (max 1MB)")
-        
-        # Process chunks
+          # Process chunks
         response = await chunker.process_chunks(request)
+        
+        # Store chunks in vector database if patient_id is provided
+        if request.patient_id and response.chunks:
+            try:
+                logger.info(f"Storing {len(response.chunks)} chunks in vector database for patient {request.patient_id}")
+                chunks_stored = await vector_store.store_medical_chunks(response.chunks, request.patient_id)
+                if chunks_stored:
+                    logger.info(f"Successfully stored {len(response.chunks)} chunks for patient {request.patient_id}")
+                    response.quality_metrics["chunks_stored"] = True
+                    response.quality_metrics["vector_store_status"] = "success"
+                else:
+                    logger.warning(f"Failed to store chunks for patient {request.patient_id}")
+                    response.quality_metrics["chunks_stored"] = False
+                    response.quality_metrics["vector_store_status"] = "failed"
+            except Exception as e:
+                logger.error(f"Error storing chunks in vector database: {e}")
+                response.quality_metrics["chunks_stored"] = False
+                response.quality_metrics["vector_store_status"] = "error"
+                response.quality_metrics["vector_store_error"] = str(e)
         
         # Create timeline if requested
         if request.create_timeline and request.patient_id:

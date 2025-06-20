@@ -255,6 +255,10 @@ class OCRResponse(BaseModel):
     original_filename: Optional[str] = Field(None, description="Original file name")
     file_size_bytes: Optional[int] = Field(None, description="File size in bytes")
     file_format: Optional[str] = Field(None, description="File format/MIME type")
+    metadata: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Additional metadata including storage path information"
+    )
     
     class Config:
         """Pydantic configuration."""
