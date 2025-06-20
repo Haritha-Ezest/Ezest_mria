@@ -1,0 +1,111 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+*.md
+docs/
+
+# Local development files
+.env.local
+.env.development
+.env.test
+
+# Logs (will be mounted as volume)
+logs/
+*.log
+
+# Cache directories
+.cache/
+.uv_cache/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Scripts (development only)
+scripts/
+setup_local*.py
+
+# Testing
+tests/
+.tox/
+
+# Local storage (will be mounted as volume)
+storage/uploads/*
+storage/processed/*
+storage/temp/*
+
+# Keep directory structure
+!storage/uploads/.gitkeep
+!storage/processed/.gitkeep
+!storage/temp/.gitkeep
+!logs/.gitkeep
